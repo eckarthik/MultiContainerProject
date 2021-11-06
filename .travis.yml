@@ -1,0 +1,15 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t eckarthik/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run eckarthik/react-test npm test -- --coverage
+
+after_success:
+ - docker build -t eckarthik/multi-client ./client
+ - docker build -t eckarthik/multi-nginx ./nginx
+ - docker build -t eckarthik/multi-server ./server
+ - docker build -t eckarthik/multi-worker ./worker
