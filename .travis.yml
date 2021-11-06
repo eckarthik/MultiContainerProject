@@ -13,3 +13,4 @@ after_success:
  - docker build -t eckarthik/multi-nginx ./nginx
  - docker build -t eckarthik/multi-server ./server
  - docker build -t eckarthik/multi-worker ./worker
+ #Take those images and push them to docker hub
