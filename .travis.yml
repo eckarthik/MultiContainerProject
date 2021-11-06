@@ -6,11 +6,16 @@ before_install:
   - docker build -t eckarthik/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run eckarthik/react-test npm test -- --coverage
+  - docker run -e CI=true eckarthik/react-test npm test -- --coverage
 
 after_success:
  - docker build -t eckarthik/multi-client ./client
  - docker build -t eckarthik/multi-nginx ./nginx
  - docker build -t eckarthik/multi-server ./server
  - docker build -t eckarthik/multi-worker ./worker
- #Take those images and push them to docker hub
+
+ - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+ - docker push eckarthik/multi-client
+ - docker push eckarthik/multi-nginx
+ - docker push eckarthik/multi-server
+ - docker push eckarthik/multi-worker
